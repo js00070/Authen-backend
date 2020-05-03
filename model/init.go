@@ -14,7 +14,7 @@ var DB *gorm.DB
 func migration() {
 	// 自动迁移模式
 	err := DB.Set("gorm:table_options", "ENGINE=InnoDB CHARSET=UTF8MB4").AutoMigrate(
-		&User{}).Error
+		&User{}, &File{}).Error
 	if err != nil {
 		panic(err)
 	}
