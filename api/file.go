@@ -92,7 +92,10 @@ func FileUpload() gin.HandlerFunc {
 	go func() {
 		for {
 			event := <-handler.CompleteUploads
-			token := event.Upload.MetaData["token"]
+			token, ok := event.Upload.MetaData["token"]
+			if !ok {
+				continue
+			}
 			uid, err := model.GetUIDFromToken(token)
 			if err != nil {
 				fmt.Println("wrong token!")
