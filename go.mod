@@ -4,6 +4,7 @@ go 1.14
 
 require (
 	github.com/alecthomas/log4go v0.0.0-20180109082532-d146e6b86faa
+	github.com/ethersphere/swarm v0.5.7
 	github.com/eventials/go-tus v0.0.0-20190617130015-9db47421f6a0 // indirect
 	github.com/gin-contrib/sessions v0.0.3
 	github.com/gin-gonic/gin v1.6.2

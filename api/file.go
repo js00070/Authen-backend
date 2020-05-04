@@ -1,6 +1,7 @@
 package api
 
 import (
+	"authen/eth"
 	"authen/model"
 	"authen/service"
 	"fmt"
@@ -93,6 +94,7 @@ func FileUpload() gin.HandlerFunc {
 		for {
 			event := <-handler.CompleteUploads
 			token, ok := event.Upload.MetaData["token"]
+			fmt.Println("token is ", token)
 			if !ok {
 				continue
 			}
@@ -107,8 +109,12 @@ func FileUpload() gin.HandlerFunc {
 				"file_name": event.Upload.MetaData["filename"],
 			}).First(&file)
 			file.IsUpload = true
-			file.Path = "/tmp/" + event.Upload.Storage["Path"]
+			file.Path = "/tmp/" + event.Upload.ID
 			file.UploadID = event.Upload.ID
+			file.ManifestHash, err = eth.UploadETH(file.Path + ".info")
+			if err != nil {
+				fmt.Println("upload swarm error: ", err.Error())
+			}
 			model.DB.Save(&file)
 			fmt.Printf("Upload %s finished, uri is %s\n", event.Upload.ID, event.HTTPRequest.URI)
 		}

@@ -1,6 +1,7 @@
 package conf
 
 import (
+	"authen/eth"
 	"authen/model"
 	"os"
 
@@ -23,4 +24,5 @@ func Init() {
 	// 读取.env环境变量
 	godotenv.Load()
 	initDB()
+	eth.Init(os.Getenv("SWARM_HOST"))
 }
