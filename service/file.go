@@ -16,6 +16,15 @@ type FileHashUploadSvc struct {
 // UploadHash 上传文件hash
 func (service *FileHashUploadSvc) UploadHash() (model.File, error) {
 	var file model.File
+	count := 0
+	model.DB.Model(&model.File{}).Where("user_id = ? and file_name = ?", service.UserID, service.FileName).Count(&count)
+	if count != 0 {
+		model.DB.Model(&model.File{}).Where("user_id = ? and file_name = ?", service.UserID, service.FileName).First(&file)
+		file.Hash = service.Hash
+		file.TimeStamp = time.Unix(service.Timestamp, 0)
+		err := model.DB.Save(&file).Error
+		return file, err
+	}
 	file.UserID = service.UserID
 	file.FileName = service.FileName
 	file.Hash = service.Hash

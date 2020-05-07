@@ -10,7 +10,7 @@ import (
 type File struct {
 	gorm.Model
 	UserID       uint   `gorm:"index"`
-	FileName     string `gorm:"size:128"`
+	FileName     string `gorm:"index;size:128"`
 	Path         string `gorm:"size:128"`
 	Hash         string `gorm:"size:128"`
 	TimeStamp    time.Time
